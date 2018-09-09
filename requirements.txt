@@ -8,7 +8,6 @@ SecretStorage==2.0.0
 Werkzeug==0.14.1
 argparse==1.2.1
 asn1crypto==0.24.0
-bzr==2.7.0.dev1
 cffi==1.11.5
 chardet==2.0.1
 click==6.7
