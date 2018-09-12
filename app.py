@@ -6,9 +6,7 @@ import config
 
 
 app = Flask(__name__)
-#app.config.from_envvar('APP_SETTINGS')
-#app.config['DEBUG'] = environ.get('DEBUG_MODE')
-#app.config['DEBUG'] = False
+
 '''
 app.config['MYSQL_DATABASE_HOST'] = config.DB_CONFIG['host']
 app.config['MYSQL_DATABASE_PORT'] = 3306
