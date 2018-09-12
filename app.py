@@ -2,7 +2,7 @@ import os
 from os import environ
 from flask import Flask, redirect, url_for, render_template
 from flaskext.mysql import MySQL
-import config
+
 
 
 app = Flask(__name__)
