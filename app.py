@@ -2,12 +2,13 @@ import os
 from os import environ
 from flask import Flask, redirect, url_for, render_template, jsonify
 from flaskext.mysql import MySQL
-
+from pymysql.cursors import DictCursor
+mysql = MySQL(cursorclass=DictCursor)
 
 
 
 app = Flask(__name__)
-app.config['DEBUG'] = False
+app.config['DEBUG'] = True
 
 if app.config['DEBUG'] == True:
     import config
@@ -26,22 +27,22 @@ else:
     app.config['MYSQL_DATABASE_DB'] = os.getenv('DB_DB')
 
 
-mysql = MySQL()
+mysql = MySQL(cursorclass=DictCursor)
 mysql.init_app(app)
 
 @app.route('/')
 def index():
    results = {}
    con = mysql.connect()
-   #cursor = mysql.connect().cursor()
    curs = con.cursor()
-   #cur = mysql.get_db().cursor()
-   curs.execute('''SELECT * FROM user_table''')
+   sql = "SELECT * FROM user_table"
+   curs.execute(sql)
    rv = curs.fetchall()
+   print(rv)
    t =(rv)
    r = dict((y, x) for y, x in t)
    print('res',r)
-   return jsonify(r) #str(rv)
+   return jsonify(rv) #str(rv)
    
 @app.route('/addone/<string:insert>')
 def addone(insert):
