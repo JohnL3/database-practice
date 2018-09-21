@@ -1,12 +1,13 @@
 import os
 from os import environ
-from flask import Flask, redirect, url_for, render_template
+from flask import Flask, redirect, url_for, render_template, jsonify
 from flaskext.mysql import MySQL
 
 
 
+
 app = Flask(__name__)
-app.config['DEBUG'] = True
+app.config['DEBUG'] = False
 
 if app.config['DEBUG'] == True:
     import config
@@ -30,21 +31,24 @@ mysql.init_app(app)
 
 @app.route('/')
 def index():
+   results = {}
    con = mysql.connect()
    #cursor = mysql.connect().cursor()
    curs = con.cursor()
    #cur = mysql.get_db().cursor()
-   curs.execute('''SELECT * FROM username''')
+   curs.execute('''SELECT * FROM user_table''')
    rv = curs.fetchall()
-   
-   return str(rv)
+   t =(rv)
+   r = dict((y, x) for y, x in t)
+   print('res',r)
+   return jsonify(r) #str(rv)
    
 @app.route('/addone/<string:insert>')
 def addone(insert):
     con = mysql.connect()
     curs = con.cursor()
     try:
-        curs.execute('''INSERT INTO username(username) VALUES(%s)''',insert)
+        curs.execute('''INSERT INTO user_table(user_name) VALUES(%s)''',insert)
         con.commit()
         return 'all done'
     except Exception as e:
