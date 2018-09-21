@@ -8,7 +8,7 @@ mysql = MySQL(cursorclass=DictCursor)
 
 
 app = Flask(__name__)
-app.config['DEBUG'] = True
+app.config['DEBUG'] = False
 
 if app.config['DEBUG'] == True:
     import config
@@ -32,17 +32,13 @@ mysql.init_app(app)
 
 @app.route('/')
 def index():
-   results = {}
    con = mysql.connect()
    curs = con.cursor()
    sql = "SELECT * FROM user_table"
    curs.execute(sql)
    rv = curs.fetchall()
-   print(rv)
-   t =(rv)
-   r = dict((y, x) for y, x in t)
-   print('res',r)
-   return jsonify(rv) #str(rv)
+  
+   return jsonify(rv)
    
 @app.route('/addone/<string:insert>')
 def addone(insert):
