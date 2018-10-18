@@ -13,6 +13,7 @@ $('.login-signup-tab').click(function(){
 
 });
 
+// adding a comment here to test out switching branch
 $('#burger').click(function(){
 
    if($('aside').css('left') === '-260px') {
