@@ -1,0 +1,18 @@
+/*
+SET FOREIGN_KEY_CHECKS=0;
+DROP TABLE ingredients_table;
+SET FOREIGN_KEY_CHECKS=1;
+*/
+SET FOREIGN_KEY_CHECKS=0;
+
+CREATE TABLE `ing_table` (
+  `recipe_iss` INT(11) AUTO_INCREMENT,
+  `ing_name` VARCHAR(45) NOT NULL,
+  `ing_quantity` VARCHAR(45) NOT NULL,
+   PRIMARY KEY (recipe_iss)
+   )ENGINE = InnoDB;
+SET FOREIGN_KEY_CHECKS=1;
+/*
+SELECT `TABLE_SCHEMA`, `TABLE_NAME`
+FROM `information_schema`.`KEY_COLUMN_USAGE`
+WHERE `CONSTRAINT_NAME` IN ('recipe');

@@ -1,0 +1,201 @@
+{% extends "base.html" %}
+{% block head %}
+
+<link rel='stylesheet' href={{url_for('static',filename='css/styles.css')}}>
+{% endblock %}
+
+{% block content %}
+
+<aside>
+    <div class='tabs'>
+      <div class='tab-holder'>
+        <div class='filter-tab'>
+          <span>Filters</span>
+        </div>
+        <div class='login-signup-tab'>
+          <span>Login/SignUp</span>
+        </div>
+        <div class='burger-container'>
+            <div id='burger'>
+                <span class='burger'></span>
+                <span class='burger'></span>
+                <span class='burger'></span>
+            </div>
+        </div>
+      </div>
+      <div class='tab-page-holder'>
+        <div class='main-filter-page'>
+
+          <div class='outer-filter'>
+            <div class='btn-wrap'>
+                <button class='sub-btn'disabled>SUBMIT</button>
+                <button class='clear-btn'>CLEAR</button>
+            </div>
+            <div class='filters'>
+                <div class='filter-hdr' id='filter-A'>
+                    <span>Allergens</span>
+                </div>
+                <div class='filter-hdr' id='filter-B'>
+                    <span>Category</span>
+                </div>
+                <div class='filter-hdr' id='filter-C'>
+                    <span>Authors</span>
+                </div>
+            </div>
+        </div>
+
+        <div class='filters-drop'>
+        <div class='filter-select-A'>
+            <div class="inner-filter">
+            <div class='inner-divs'><input type="checkbox" name='allergen' class='hasEgg'><label>Egg</label></div>
+            <div><input type="checkbox" name='allergen'  class='hasMolluscs'><label>Molluscs</label></div>
+            <div><input type="checkbox" name='allergen'  class='hasPeanuts'><label>Peanuts</label></div>
+            <div><input type="checkbox" name='allergen'  class='hasNuts'><label>Nuts</label></div>
+            <div><input type="checkbox" name='allergen'  class='hasSoyabeans'><label>Soyabeans</label></div>
+            <div><input type="checkbox" name='allergen'  class='hasMilk'><label>Milk</label></div>
+            <div><input type="checkbox" name='allergen'  class='hasCelery'><label>Celery</label></div>
+            <div><input type="checkbox" name='allergen'  class='hasMustard'><label>Mustard</label></div>
+            <div><input type="checkbox" name='allergen'  class='hasSesameseeds'><label>Sesame Seeds</label></div>
+            <div><input type="checkbox" name='allergen'  class='hasFish'><label>Fish</label></div>
+            <div><input type="checkbox" name='allergen'  class='hasLupin'><label>Lupin</label></div>
+            <div><input type="checkbox" name='allergen'  class='hasSulpherdioxide'><label>Sulpher Dioxide</label></div>
+            <div><input type="checkbox" name='allergen'  class='hasCerals'><label>Cereals</label></div>
+            <div><input type="checkbox" name='allergen'  class='hasCrustaceans'><label>Crustaceans </label></div>
+            </div>
+            
+          </div>
+          <div class='filter-select-B'>
+              <div class='inner-filter'>
+                  {% for c in category %}
+                  <div class='inner-divs'>
+                    <input type="radio" name='category' value='{{c.category_name}}' class='{{c.category_name}}'><label>{{c.category_name}}</label>
+                  </div>
+                {% endfor %}
+              </div>
+          </div>
+          
+          <div class='filter-select-C'>
+              <div class='inner-filter'>
+                  {% for a in author %}
+                  <div class='inner-divs'>
+                    <input type="radio" name='author' value='{{a.author_name}}' class='{{a.author_name}}'><label>{{a.author_name}}</label>
+                  </div>
+                {% endfor %}
+              </div>
+          </div>
+      </div>
+
+        </div>
+        <div class='main-login-signup-page'>
+          <div class='login-sign'>
+              {% if username %}
+              <span id='s-u' >SIGN UP</span> 
+              <span id='l-i' >LOGIN</span>
+              {% else %}
+              <span id='s-u' class='sup-log'>SIGN UP</span> 
+              <span id='l-i' class='sup-log'>LOGIN</span>
+              {% endif %}
+          </div>
+          <form id='myForm' action='https://database-cook-johnl3.c9users.io/signup' method='POST'>
+            <div id="user">
+                <label>username</label>
+                <input type='text' required='true' maxlength='12' name='username' value=''>
+                <label>password</label>
+                <input type='password' required='true' maxlength='40' name='password' value=''>
+                {% if username %}
+                <button type="submit" disabled value='submit'>Login</button>
+                {% else %}
+                <button type="submit" value='submit'>Sign Up</button>
+                {% endif %}
+            </div>
+        </form>
+        </div>
+      </div>
+    </div>
+    </aside>
+   <header>
+       <span class='title'>Our Cook Books...</span>
+       {% if username %}
+       <span>{{username}}</span>
+       <span><a href="{{ url_for('logout') }}">LOGOUT</a></span>
+       {% endif %}
+   </header>
+   <div class='card'>
+        {% for r in recipe %}
+        <div id='{{r.id}}'>
+            <img src='assets/desert.jpeg'>
+            <h2>{{r.recipe_name}}</h2>
+            
+            <div class='author-category'>
+                <span class='menu-titles'>Category</span><span class='menu-titles'>Author</span>
+                <span>{{r.category_name}}</span><span>{{r.author_name}}</span>
+            </div>
+            <span class='all-allergen'>ALLERGENS</span>
+            
+            <div class='recipe-allergens'>
+            {% if r.hasEgg =='T' %}
+                <span class='allergen'>Egg</span>
+            {% endif %}
+            
+            {% if r.hasMilk =='T' %}
+                <span class='allergen'>Milk</span>
+            {% endif %}
+            
+            {% if r.hasNuts =='T' %}
+                <span class='allergen'>Nut</span>
+            {% endif %}
+            
+            {% if r.hasPeanuts =='T' %}
+                <span class='allergen'>Peanut</span>
+            {% endif %}
+            
+            {% if r.hasSesameseeds =='T' %}
+                <span class='allergen'>Sesame Seed</span>
+            {% endif %}
+            
+            {% if r.hasCelery =='T' %}
+                <span class='allergen'>Celery</span>
+            {% endif %}
+            
+            {% if r.hasLupin =='T' %}
+                <span class='allergen'>Lupin</span>
+            {% endif %}
+            
+            {% if r.hasMustard =='T' %}
+                <span class='allergen'>Mustard</span>
+            {% endif %}
+            
+            {% if r.hasCrustaceans =='T' %}
+                <span class='allergen'>Crustaceans</span>
+            {% endif %}
+            
+            {% if r.hasSoyabeans =='T' %}
+                <span class='allergen'>Soyabeans</span>
+            {% endif %}
+            
+            {% if r.hasCerals =='T' %}
+                <span class='allergen'>Cerals</span>
+            {% endif %}
+            
+            {% if r.hasFish =='T' %}
+                <span class='allergen'>Fish</span>
+            {% endif %}
+            
+            {% if r.hasSulpherdioxide =='T' %}
+                <span class='allergen'>Sulpherdioxide</span>
+            {% endif %}
+            
+            {% if r.hasMolluscs =='T' %}
+                <span class='allergen'>Molluscs</span>
+            {% endif %}
+            
+            </div>
+        </div>
+        {% endfor %}
+        
+    </div>
+   
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src={{url_for('static',filename='js/main.js')}}> </script>
+{% endblock %}

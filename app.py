@@ -1,59 +1,62 @@
 import os
 from os import environ
 from flask import Flask, redirect, url_for, render_template, jsonify
-from flaskext.mysql import MySQL
-from pymysql.cursors import DictCursor
-mysql = MySQL(cursorclass=DictCursor)
+from database.DB_functions import DB_configuration, get_all_recipes, insert_into_ingredients, test_val
 
 
 
 app = Flask(__name__)
-app.config['DEBUG'] = False
+app.config['DEBUG'] = True
 
-if app.config['DEBUG'] == True:
-    import config
-
-    app.config['MYSQL_DATABASE_HOST'] = config.DB_CONFIG['host']
-    app.config['MYSQL_DATABASE_PORT'] = 3306
-    app.config['MYSQL_DATABASE_USER'] = config.DB_CONFIG['user']
-    app.config['MYSQL_DATABASE_PASSWORD'] = config.DB_CONFIG['password']
-    app.config['MYSQL_DATABASE_DB'] = config.DB_CONFIG['db']
-    
-else:
-    app.config['MYSQL_DATABASE_HOST'] = os.getenv('DB_HOST')
-    app.config['MYSQL_DATABASE_PORT'] = 3306
-    app.config['MYSQL_DATABASE_USER'] = os.getenv('DB_USER')
-    app.config['MYSQL_DATABASE_PASSWORD'] = os.getenv('DB_PASSWORD')
-    app.config['MYSQL_DATABASE_DB'] = os.getenv('DB_DB')
-
-
-mysql = MySQL(cursorclass=DictCursor)
-mysql.init_app(app)
+mysql = DB_configuration(app)
 
 @app.route('/')
 def index():
-   con = mysql.connect()
-   curs = con.cursor()
-   sql = "SELECT * FROM user_table"
-   curs.execute(sql)
-   rv = curs.fetchall()
-  
-   return jsonify(rv)
+   data = get_all_recipes(mysql)
+   return render_template('index.html', recipe=data)
+
+@app.route('/test')
+def test():
+    data = {}
+    data['username'] = 'John_L3'
+    result = test_val(mysql, data)
+    
+    return str(result)
    
-@app.route('/addone/<string:insert>')
-def addone(insert):
+@app.route('/addone/<string:insert>/<string:password>')
+def addone(insert, password):
     con = mysql.connect()
     curs = con.cursor()
     try:
-        curs.execute('''INSERT INTO user_table(user_name) VALUES(%s)''',insert)
+        row = ['Mad_Hat', password]
+        curs.execute('''INSERT INTO user_table(user_id, user_name, password) VALUES(Null , %s, %s)''',row)
         con.commit()
-        return 'all done'
+        curs.execute('''SELECT LAST_INSERT_ID()''')
+        last_id = curs.fetchall()
+        r = last_id[0]['LAST_INSERT_ID()']
     except Exception as e:
         return 'Error saving data: '+str(e)
+        
+    try:
+        row = [insert, password]
+        curs.execute('''INSERT INTO user_table(user_id, user_name, password) VALUES(Null , %s, %s)''',row)
+        con.commit()
+        curs.execute('''SELECT LAST_INSERT_ID()''')
+        last_id = curs.fetchall()
+        s = last_id[0]['LAST_INSERT_ID()']
+        return str(r)+' '+ str(s)
+    except Exception as e:
+        return 'Error saving data: '+str(e)
+        
     
-@app.route('/getall')
-def getall():
-    return 'all done'
+    
+@app.route('/inserting')
+def inserting():
+    data = [['Milk', '1ltr'], ['Sugar', '1/2 pound'], ['Flour', '500g']]
+    res = insert_into_ingredients(mysql, data)
+    #return jsonify({'data':res})
+    r = res[0]['LAST_INSERT_ID()']
+    return str(r)
 
 
 if __name__ == '__main__':

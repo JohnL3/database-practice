@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block head %}
+
+<link rel='stylesheet' href={{url_for('static',filename='css/practice.css')}}>
+{% endblock %}
+{% block content %}
+<div class="receipe">
+      <div class='receipe-catorgory'>
+        <label>CATEGORY</label>
+        <select class='category-option'>
+          <option value="Savory"></option>
+          <option value="Savory">Savory</option>
+          <option value="Dessert">Dessert</option>
+          <option value="Main">Main</option>
+          <option value="Seafood">Seafood</option>
+          <option value='new'>Add new category</option>
+        </select>
+      </div>
+      <div class='receipe-name'>
+        <label>RECIPES NAME</label>
+        <label>AUTHORS NAME</label>
+        <input  type='text' class='recipe-inp' placeholder="Ice Cream Sunday">
+        <input  type='text' class='author-inp' placeholder="Jane doe">
+        <hr/>
+      </div>
+      <div class='receipe-ing'>
+        <label>INGREDIENTS</label>
+        <label>QUANTITY</label>
+        <span></span>
+        <input type='text' class='a1' placeholder="Egg">
+        <input type='text' class= 'a1' placeholder="4 medium">
+        <span></span>
+        <input type='text' class='a2' placeholder="Milk">
+        <input type='text' class='a2' placeholder="1/4 ltr"><span></span>
+
+
+        <div class="list-more-ing">
+          <span class="more-ing">Add more Lines</span>
+        </div>
+      </div>
+      <div class='receipe-allergens'>
+        <label>Select all allergens used in recipe</label>
+        <div class="allergens">
+        <div><input type="checkbox" class='hasEgg'><label>Egg</label></div>
+        <div><input type="checkbox" class='hasMolluscs'><label>Molluscs</label></div>
+        <div><input type="checkbox" class='hasPeanuts'><label>Peanuts</label></div>
+        <div><input type="checkbox" class='hasNuts'><label>Nuts</label></div>
+        <div><input type="checkbox" class='hasSoyabeans'><label>Soyabeans</label></div>
+        <div><input type="checkbox" class='hasMilk'><label>Milk</label></div>
+        <div><input type="checkbox" class='hasCelery'><label>Celery</label></div>
+        <div><input type="checkbox" class='hasMustard'><label>Mustard</label></div>
+        <div><input type="checkbox" class='hasSesameseds'><label>Sesame Seeds</label></div>
+        <div><input type="checkbox" class='hasFish'><label>Fish</label></div>
+        <div><input type="checkbox" class='hasLupin'><label>Lupin</label></div>
+        <div><input type="checkbox" class='hasSulpherdioxide'><label>Sulpher Dioxide</label></div>
+        <div><input type="checkbox" class='hasCerals'><label>Cereals</label></div>
+        <div><input type="checkbox" class='hasCrustaceans'><label>Crustaceans </label></div>
+        </div>
+      </div>
+      <div class='receipe-instructions'>
+        <label>INSTRUCTIONS</label>
+        <ol id='ol-ing' contenteditable="true">
+          <li>Delete this text and add your instructions, hit enter for each section.</li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+        </ol>
+        <div id='cover'></div>
+        <div class="recipe-photo">
+          <button>UPLOAD PHOTO</button>
+        </div>
+        <div class="recipe-submit-btn">
+          <button class="submit-btn">SUBMIT</button>
+        </div>
+      </div>
+    </div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src={{url_for('static',filename='js/create_new_recipe.js')}}> </script>
+{% endblock %}
